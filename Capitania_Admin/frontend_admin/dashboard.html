@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capitanía - Dashboard</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="../../Images/Galeria/Opcion%201/Logo%20Capitania%20Transparente.png" alt="Capitanía"
+                style="width: 100%; max-width: 160px; filter: drop-shadow(0 0 10px rgba(200, 134, 10, .5));">
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchTab('reservas')">📅 Gestión de Reservas</li>
+            <li class="nav-item" onclick="switchTab('eventos')">✨ Eventos Especiales</li>
+            <li class="nav-item" onclick="switchTab('promociones')">🍾 Promociones</li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="topbar">
+            <h1 id="pageTitle">Gestión de Reservas</h1>
+            <div>
+                <span style="margin-right: 1rem; color: var(--muted); font-size: 0.9rem;">Hola, <span
+                        id="userName">Admin</span></span>
+                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- ── TAB: RESERVAS ── -->
+        <section id="tab-reservas" class="tab-content active">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Sucursal</th>
+                        <th>Fecha y Hora</th>
+                        <th>Personas</th>
+                        <th>Teléfono</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="reservasTableBody">
+                    <!-- Dinámico -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ── TAB: EVENTOS ── -->
+        <section id="tab-eventos" class="tab-content">
+            <div class="dashboard-form">
+                <h3 style="color: var(--gold-l); margin-bottom: 1.5rem;">Publicar Nuevo Evento</h3>
+                <form id="formEvento">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Título del Evento</label>
+                            <input type="text" id="ev_titulo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha del Evento (Ej. 'Viernes 20 Oct')</label>
+                            <input type="text" id="ev_fecha" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>Descripción Corta</label>
+                            <input type="text" id="ev_desc" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>URL de Imagen</label>
+                            <input type="text" id="ev_img" placeholder="Images/Galeria/...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar
+                        Evento</button>
+                </form>
+            </div>
+
+            <h3 style="margin-bottom: 1rem; font-weight: 400;">Eventos Activos</h3>
+            <div class="grid-cards" id="eventosGrid">
+                <!-- Dinámico -->
+            </div>
+        </section>
+
+        <!-- ── TAB: PROMOCIONES ── -->
+        <section id="tab-promociones" class="tab-content">
+            <div class="dashboard-form">
+                <h3 style="color: var(--gold-l); margin-bottom: 1.5rem;">Publicar Nueva Promoción</h3>
+                <form id="formPromo">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre de la Promo</label>
+                            <input type="text" id="pr_nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio o Etiqueta Destacada (Opcional)</label>
+                            <input type="text" id="pr_precio">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>Descripción y Vigencia</label>
+                            <input type="text" id="pr_desc" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>URL de Imagen</label>
+                            <input type="text" id="pr_img" placeholder="Images/Galeria/...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar
+                        Promoción</button>
+                </form>
+            </div>
+
+            <h3 style="margin-bottom: 1rem; font-weight: 400;">Promociones Activas</h3>
+            <div class="grid-cards" id="promocionesGrid">
+                <!-- Dinámico -->
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
