@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node server.js)",
+      "Bash(npm install *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(node scripts/createAdminUser.js)",
+      "Bash(node scripts/createAdminUserSimple.js)",
+      "Bash(dir /s)"
+    ]
+  }
+}

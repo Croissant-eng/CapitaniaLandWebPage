@@ -1631,7 +1631,7 @@
         <h2 class="section-title">Eventos <em>Especiales</em></h2>
         <div class="gold-line"></div>
       </div>
-      <div class="eventos-grid reveal">
+      <div class="eventos-grid reveal" id="contenedor-eventos">
         <!-- Evento 1 -->
         <article class="evento-card">
           <div class="evento-media">
@@ -1755,7 +1755,7 @@
         <h2 class="section-title">Promociones <em>del momento</em></h2>
         <div class="gold-line"></div>
       </div>
-      <div class="promo-grid reveal">
+      <div class="promo-grid reveal" id="contenedor-promociones">
         <!-- Promo 1 -->
         <article class="promo-card">
           <div class="promo-img">
@@ -2541,7 +2541,85 @@
         }
       }
     }
-  </script>
+    // Cargar Eventos y Promociones
+    async function cargarDatos() {
+        // Mostrar preloader
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.display = 'block';
+        }
+
+        try {
+            // Cargar Eventos
+            console.log("Intentando fetch a /api/eventos");
+            const resE = await fetch('http://localhost:3001/api/eventos', {
+                credentials: 'include'
+            });
+
+            if (!resE.ok) {
+                throw new Error(`HTTP error! status: ${resE.status}`);
+            }
+
+            const eventos = await resE.json();
+            const contE = document.getElementById('contenedor-eventos');
+
+            if(contE && eventos && Array.isArray(eventos)) {
+                contE.innerHTML = eventos.map(e => `
+                    <article class="evento-card">
+                        <div class="evento-info">
+                            <h3>${e.titulo}</h3>
+                            <p>${e.descripcion}</p>
+                            <span class="evento-tag">${e.fecha_evento}</span>
+                        </div>
+                    </article>
+                `).join('');
+                console.log("Eventos cargados correctamente");
+            } else {
+                console.warn("No se encontraron eventos o los datos no son un array:", eventos);
+            }
+        } catch(e) {
+            console.error("Error en eventos:", e);
+        }
+
+        try {
+            // Cargar Promociones
+            console.log("Intentando fetch a /api/promociones");
+            const resP = await fetch('http://localhost:3001/api/promociones', {
+                credentials: 'include'
+            });
+
+            if (!resP.ok) {
+                throw new Error(`HTTP error! status: ${resP.status}`);
+            }
+
+            const promos = await resP.json();
+            const contP = document.getElementById('contenedor-promociones');
+
+            if(contP && promos && Array.isArray(promos)) {
+                contP.innerHTML = promos.map(p => `
+                    <article class="evento-card">
+                        <div class="evento-info">
+                            <h3>${p.titulo}</h3>
+                            <p>${p.descripcion}</p>
+                        </div>
+                    </article>
+                `).join('');
+                console.log("Promociones cargadas correctamente");
+            } else {
+                console.warn("No se encontraron promociones o los datos no son un array:", promos);
+            }
+        } catch(e) {
+            console.error("Error en promociones:", e);
+        } finally {
+            // Ocultar preloader en cualquier caso
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+        }
+    }
+
+    window.addEventListener('load', cargarDatos);
+</script>
 </body>
 
 </html>
