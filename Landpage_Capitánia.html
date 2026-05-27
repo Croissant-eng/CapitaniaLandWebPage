@@ -2474,27 +2474,29 @@
 
       document.getElementById('reserva-detail').textContent = detail;
 
-      // Simulate sending (in production: POST to backend / WhatsApp API)
-      const btn = e.target.querySelector('.btn-reserva');
-      btn.innerHTML = '<span>Enviando…</span>';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        document.getElementById('reservaFormWrap').style.display = 'none';
-        const success = document.getElementById('reservaSuccess');
-        success.classList.add('show');
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // WhatsApp pre-fill (optional integration)
-        const msg = encodeURIComponent(
-          `¡Hola Capitanía! Quiero confirmar mi reserva:\n\n` +
-          `👤 Nombre: ${nombre}\n📱 Tel: ${tel}\n👥 Personas: ${personas}\n` +
-          `📅 Fecha: ${fechaStr}\n⏰ Hora: ${hora}\n` +
-          (notas ? `📝 Notas: ${notas}` : '')
-        );
-        // Auto-open WhatsApp (optional — comment out if not desired)
-        // window.open(`https://wa.me/524770000000?text=${msg}`, '_blank');
-      }, 1200);
+      fetch('http://localhost:3001/api/reservas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, telefono: tel, fecha, hora, personas, sucursal, notas })
+      })
+      .then(res => res.json())
+      .then(() => {
+          document.getElementById('reservaFormWrap').style.display = 'none';
+          const success = document.getElementById('reservaSuccess');
+          success.classList.add('show');
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const msg = encodeURIComponent(
+              `¡Hola Capitanía! Quiero confirmar mi reserva:\n\n` +
+              `👤 Nombre: ${nombre}\n📱 Tel: ${tel}\n👥 Personas: ${personas}\n` +
+              `📅 Fecha: ${fechaStr}\n⏰ Hora: ${hora}\n` +
+              (notas ? `📝 Notas: ${notas}` : '')
+          );
+      })
+      .catch(() => {
+          btn.innerHTML = '<span>Reservar</span>';
+          btn.disabled = false;
+          alert('Hubo un problema al enviar la reserva. Intenta de nuevo.');
+      });
     }
     // ── PRELOADER ──
     (function () {

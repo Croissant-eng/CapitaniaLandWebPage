@@ -1,3 +1,4 @@
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { db } = require('../config/database');
@@ -8,28 +9,43 @@ const JWT_SECRET = process.env.JWT_SECRET || 'capitania_super_secret_key_2026';
 // Login de administrador
 const loginAdmin = async (username, password) => {
     try {
+        console.log('LOGIN INTENTO:', username, password);
         const [rows] = await db.query('SELECT * FROM administradores WHERE username = ?', [username]);
+        console.log('FILAS ENCONTRADAS:', rows.length);
 
         if (rows.length === 0) {
             throw new Error('Credenciales incorrectas');
         }
 
         const admin = rows[0];
+        console.log('HASH EN DB:', admin.password_hash);
 
-        // Verificar contraseña
-        const isMatch = await bcrypt.compare(password, admin.password_hash);
+        let isMatch = false;
 
-        // Bypass de emergencia: si la contraseña es admin123 y falla bcrypt, dejamos pasar
-        if (!isMatch && password === 'admin123') {
-            const token = jwt.sign({ id: admin.id, username: admin.username }, JWT_SECRET, { expiresIn: '8h' });
-            return { token, username: admin.username };
+        // Intentar bcrypt primero
+        try {
+            isMatch = await bcrypt.compare(password, admin.password_hash);
+        } catch (e) {
+            isMatch = false;
         }
+
+        // Si no hay hash guardado, comparar texto plano
+        if (!isMatch && admin.password_hash === password) {
+            isMatch = true;
+        }
+
+        console.log('COINCIDE:', isMatch);
 
         if (!isMatch) {
             throw new Error('Credenciales incorrectas');
         }
 
-        const token = jwt.sign({ id: admin.id, username: admin.username }, JWT_SECRET, { expiresIn: '8h' });
+        const token = jwt.sign(
+            { id: admin.id, username: admin.username },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
         return { token, username: admin.username };
     } catch (error) {
         throw error;

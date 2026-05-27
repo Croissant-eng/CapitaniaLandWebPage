@@ -7,7 +7,14 @@
       "Bash(findstr :3000)",
       "Bash(node scripts/createAdminUser.js)",
       "Bash(node scripts/createAdminUserSimple.js)",
-      "Bash(dir /s)"
+      "Bash(dir /s)",
+      "Bash(xargs grep -l \"3000\")",
+      "Bash(xargs grep -n \"localhost:3000\\\\|api.*3000\")",
+      "Bash(xargs grep -l \"localhost:3000\")",
+      "Bash(npm start *)",
+      "Bash(xargs grep -l \"localhost:3000\\\\|3000\")",
+      "Bash(xargs grep -l \"fetch\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

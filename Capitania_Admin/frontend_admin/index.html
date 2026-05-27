@@ -23,39 +23,60 @@
                     <input type="password" id="password" required>
                 </div>
                 <p id="loginError" style="color: var(--danger); font-size: 0.8rem; margin-bottom: 1rem; display: none;">Credenciales incorrectas.</p>
-                <button type="submit" class="btn-primary">Ingresar</button>
+                <button type="submit" id="btnLogin" class="btn-primary">Ingresar</button>
             </form>
         </div>
     </div>
 
     <script src="js/app.js"></script>
     <script>
-        // Check if already logged in
+        const API_BASE = 'http://localhost:3001';
+
         if (localStorage.getItem('capitania_token')) {
             window.location.href = 'dashboard.html';
         }
 
+        let loginEnProceso = false;
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (loginEnProceso) return;
+            loginEnProceso = true;
+
+            const btn = document.getElementById('btnLogin');
+            btn.disabled = true;
+            btn.innerText = 'Ingresando...';
+
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
             const err = document.getElementById('loginError');
-            
+            err.style.display = 'none';
+
             try {
-                const res = await fetch('http://localhost:3000/api/login', {
+                const res = await fetch(`${API_BASE}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ username: u, password: p })
                 });
-                
-                if (!res.ok) throw new Error('Login fallido');
-                
+
                 const data = await res.json();
-                localStorage.setItem('capitania_token', data.token);
-                localStorage.setItem('capitania_user', data.username);
-                window.location.href = 'dashboard.html';
+
+                if (res.ok && data.token) {
+                    localStorage.setItem('capitania_token', data.token);
+                    localStorage.setItem('capitania_user', data.username);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    err.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerText = 'Ingresar';
+                    loginEnProceso = false;
+                }
             } catch (error) {
                 err.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = 'Ingresar';
+                loginEnProceso = false;
             }
         });
     </script>

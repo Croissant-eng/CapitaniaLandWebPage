@@ -16,7 +16,7 @@ const app = express();
 
 // 1. CORS: Permite que tu frontend acceda a tu API
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', 
+    origin: true,
     credentials: true
 }));
 
@@ -46,7 +46,7 @@ app.use(errorHandler);
 // --- INICIAR SERVIDOR ---
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor de Capitania corriendo en http://localhost:${PORT}`);
 });
 

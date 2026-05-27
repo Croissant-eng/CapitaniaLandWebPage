@@ -1,6 +1,19 @@
-const { getAllReservas, updateReservaEstatus, deleteReserva } = require('../services/reservaService');
+const { getAllReservas, updateReservaEstatus, deleteReserva, createReserva } = require('../services/reservaService');
 
-// Obtener todas las reservas
+const create = async (req, res) => {
+    try {
+        const { nombre, telefono, fecha, hora, personas, sucursal, notas } = req.body;
+        if (!nombre || !fecha || !hora || !personas) {
+            return res.status(400).json({ error: 'Faltan campos requeridos' });
+        }
+        await createReserva({ nombre, telefono, fecha, hora, personas, sucursal, notas });
+        res.status(201).json({ success: true, message: 'Reserva creada' });
+    } catch (error) {
+        console.error('Error al crear reserva:', error);
+        res.status(500).json({ error: 'Error al crear reserva' });
+    }
+};
+
 const getAll = async (req, res) => {
     try {
         const reservas = await getAllReservas();
@@ -10,16 +23,11 @@ const getAll = async (req, res) => {
     }
 };
 
-// Actualizar el estatus de una reserva
 const updateEstatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { estatus } = req.body;
-
-        if (!estatus) {
-            return res.status(400).json({ error: 'Estatus es requerido' });
-        }
-
+        if (!estatus) return res.status(400).json({ error: 'Estatus es requerido' });
         await updateReservaEstatus(id, estatus);
         res.json({ message: 'Estatus actualizado' });
     } catch (error) {
@@ -27,7 +35,6 @@ const updateEstatus = async (req, res) => {
     }
 };
 
-// Eliminar una reserva
 const deleteReservaById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -38,8 +45,4 @@ const deleteReservaById = async (req, res) => {
     }
 };
 
-module.exports = {
-    getAll,
-    updateEstatus,
-    deleteReservaById
-};
+module.exports = { getAll, updateEstatus, deleteReservaById, create };

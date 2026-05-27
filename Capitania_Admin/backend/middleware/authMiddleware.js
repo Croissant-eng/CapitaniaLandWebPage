@@ -7,8 +7,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'capitania_super_secret_key_2026';
 // Middleware de autenticación
 const authMiddleware = (req, res, next) => {
     try {
-        // Obtener el token de las cookies
-        const token = req.cookies.token;
+        const token = req.cookies.token ||
+                      (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
         if (!token) {
             return res.status(401).json({
@@ -17,7 +17,6 @@ const authMiddleware = (req, res, next) => {
             });
         }
 
-        // Verificar el token
         const decoded = jwt.verify(token, JWT_SECRET);
         req.admin = decoded;
         next();
@@ -38,7 +37,8 @@ const authMiddleware = (req, res, next) => {
 // Middleware para verificar rol de administrador
 const adminMiddleware = (req, res, next) => {
     try {
-        const token = req.cookies.token;
+        const token = req.cookies.token ||
+                      (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
         if (!token) {
             return res.status(401).json({

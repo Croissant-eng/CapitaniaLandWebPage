@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/authMiddleware');
-const { getAll, updateEstatus, deleteReservaById } = require('../controllers/reservaController');
+const { getAll, updateEstatus, deleteReservaById, create } = require('../controllers/reservaController');
 
-// Rutas protegidas
+router.post('/reservas', create);
 router.get('/reservas', authMiddleware, getAll);
 router.put('/reservas/:id/estatus', authMiddleware, updateEstatus);
 router.delete('/reservas/:id', authMiddleware, deleteReservaById);
