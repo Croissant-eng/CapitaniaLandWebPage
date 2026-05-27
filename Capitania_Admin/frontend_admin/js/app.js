@@ -1,5 +1,7 @@
 // API URL (Ajustar en producción)
-const API_URL = 'http://localhost:3001/api';
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001/api'
+    : 'https://7mzq2kk1-3001.usw3.devtunnels.ms/api';
 
 // Verificar autenticación en el Dashboard
 if (window.location.pathname.includes('dashboard.html')) {
