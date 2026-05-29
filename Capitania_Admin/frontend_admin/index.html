@@ -30,7 +30,9 @@
 
     <script src="js/app.js"></script>
     <script>
-        const API_BASE = 'http://localhost:3001';
+        const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001'
+    : 'https://7mzq2kk1-3001.usw3.devtunnels.ms';
 
         if (localStorage.getItem('capitania_token')) {
             window.location.href = 'dashboard.html';

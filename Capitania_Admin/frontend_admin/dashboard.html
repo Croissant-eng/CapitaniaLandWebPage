@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capitanía - Dashboard</title>
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 
@@ -23,6 +20,7 @@
             <li class="nav-item active" onclick="switchTab('reservas')">📅 Gestión de Reservas</li>
             <li class="nav-item" onclick="switchTab('eventos')">✨ Eventos Especiales</li>
             <li class="nav-item" onclick="switchTab('promociones')">🍾 Promociones</li>
+            <li class="nav-item" onclick="switchTab('historial')">📋 Historial del Día</li>
         </ul>
     </aside>
 
@@ -30,14 +28,25 @@
         <div class="topbar">
             <h1 id="pageTitle">Gestión de Reservas</h1>
             <div>
-                <span style="margin-right: 1rem; color: var(--muted); font-size: 0.9rem;">Hola, <span
-                        id="userName">Admin</span></span>
+                <span style="margin-right: 1rem; color: var(--muted); font-size: 0.9rem;">Hola, <span id="userName">Admin</span></span>
                 <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
             </div>
         </div>
 
         <!-- ── TAB: RESERVAS ── -->
         <section id="tab-reservas" class="tab-content active">
+            <!-- Filtro de sucursales -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem;">Filtrar por Sucursal</label>
+                    <select id="filtroSucursal" onchange="filtrarReservas()" style="padding: 0.6rem 1rem; background: var(--dark2); border: 1px solid rgba(200,134,10,0.3); color: var(--cream); border-radius: 4px; font-size: 0.9rem; cursor: pointer;">
+                        <option value="">Todas las sucursales</option>
+                        <option value="Campestre">Campestre</option>
+                        <option value="J. Vértiz Campero">J. Vértiz Campero</option>
+                    </select>
+                </div>
+            </div>
+
             <table class="data-table">
                 <thead>
                     <tr>
@@ -52,7 +61,6 @@
                     </tr>
                 </thead>
                 <tbody id="reservasTableBody">
-                    <!-- Dinámico -->
                 </tbody>
             </table>
         </section>
@@ -82,15 +90,11 @@
                             <input type="text" id="ev_img" placeholder="/Images/Galeria/...">
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar
-                        Evento</button>
+                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar Evento</button>
                 </form>
             </div>
-
             <h3 style="margin-bottom: 1rem; font-weight: 400;">Eventos Activos</h3>
-            <div class="grid-cards" id="eventosGrid">
-                <!-- Dinámico -->
-            </div>
+            <div class="grid-cards" id="eventosGrid"></div>
         </section>
 
         <!-- ── TAB: PROMOCIONES ── -->
@@ -118,15 +122,24 @@
                             <input type="text" id="pr_img" placeholder="/Images/Galeria/...">
                         </div>
                     </div>
-                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar
-                        Promoción</button>
+                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar Promoción</button>
                 </form>
             </div>
-
             <h3 style="margin-bottom: 1rem; font-weight: 400;">Promociones Activas</h3>
-            <div class="grid-cards" id="promocionesGrid">
-                <!-- Dinámico -->
+            <div class="grid-cards" id="promocionesGrid"></div>
+        </section>
+
+        <!-- ── TAB: HISTORIAL DEL DÍA ── -->
+        <section id="tab-historial" class="tab-content">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <div>
+                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem;">Seleccionar Fecha</label>
+                    <input type="date" id="historialFecha" style="padding: 0.6rem 1rem; background: var(--dark2); border: 1px solid rgba(200,134,10,0.3); color: var(--cream); border-radius: 4px; font-size: 0.9rem;">
+                </div>
+                <button class="btn-primary" style="width: auto; padding: 0.7rem 1.5rem;" onclick="loadHistorial()">Buscar</button>
             </div>
+            <div id="historialResumen" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;"></div>
+            <div id="historialLista"></div>
         </section>
 
     </main>
