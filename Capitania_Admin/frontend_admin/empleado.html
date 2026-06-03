@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capitanía - Dashboard</title>
+    <title>Capitanía - Panel de Empleado</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -18,8 +18,6 @@
         </div>
         <ul class="nav-menu">
             <li class="nav-item active" onclick="switchTab('reservas')">📅 Gestión de Reservas</li>
-            <li class="nav-item" onclick="switchTab('eventos')">✨ Eventos Especiales</li>
-            <li class="nav-item" onclick="switchTab('promociones')">🍾 Promociones</li>
             <li class="nav-item" onclick="switchTab('historial')">📋 Historial del Día</li>
         </ul>
     </aside>
@@ -28,7 +26,7 @@
         <div class="topbar">
             <h1 id="pageTitle">Gestión de Reservas</h1>
             <div>
-                <span style="margin-right: 1rem; color: var(--muted); font-size: 0.9rem;">Hola, <span id="userName">Admin</span></span>
+                <span style="margin-right: 1rem; color: var(--muted); font-size: 0.9rem;">Hola, <span id="userName">Empleado</span></span>
                 <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
             </div>
         </div>
@@ -69,70 +67,6 @@
             </table>
         </section>
 
-        <!-- ── TAB: EVENTOS ── -->
-        <section id="tab-eventos" class="tab-content">
-            <div class="dashboard-form">
-                <h3 style="color: var(--gold-l); margin-bottom: 1.5rem;">Publicar Nuevo Evento</h3>
-                <form id="formEvento">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Título del Evento</label>
-                            <input type="text" id="ev_titulo" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Fecha del Evento (Ej. 'Viernes 20 Oct')</label>
-                            <input type="text" id="ev_fecha" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group" style="flex: 2;">
-                            <label>Descripción Corta</label>
-                            <input type="text" id="ev_desc" required>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>URL de Imagen</label>
-                            <input type="text" id="ev_img" placeholder="/Images/Galeria/...">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar Evento</button>
-                </form>
-            </div>
-            <h3 style="margin-bottom: 1rem; font-weight: 400;">Eventos Activos</h3>
-            <div class="grid-cards" id="eventosGrid"></div>
-        </section>
-
-        <!-- ── TAB: PROMOCIONES ── -->
-        <section id="tab-promociones" class="tab-content">
-            <div class="dashboard-form">
-                <h3 style="color: var(--gold-l); margin-bottom: 1.5rem;">Publicar Nueva Promoción</h3>
-                <form id="formPromo">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Nombre de la Promo</label>
-                            <input type="text" id="pr_nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Precio o Etiqueta Destacada (Opcional)</label>
-                            <input type="text" id="pr_precio">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group" style="flex: 2;">
-                            <label>Descripción y Vigencia</label>
-                            <input type="text" id="pr_desc" required>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>URL de Imagen</label>
-                            <input type="text" id="pr_img" placeholder="/Images/Galeria/...">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.8rem 2rem;">Publicar Promoción</button>
-                </form>
-            </div>
-            <h3 style="margin-bottom: 1rem; font-weight: 400;">Promociones Activas</h3>
-            <div class="grid-cards" id="promocionesGrid"></div>
-        </section>
-
         <!-- ── TAB: HISTORIAL DEL DÍA ── -->
         <section id="tab-historial" class="tab-content">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
@@ -140,7 +74,7 @@
                     <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem;">Seleccionar Fecha</label>
                     <input type="date" id="historialFecha" style="padding: 0.6rem 1rem; background: var(--dark2); border: 1px solid rgba(200,134,10,0.3); color: var(--cream); border-radius: 4px; font-size: 0.9rem;">
                 </div>
-                <button class="btn-primary" style="width: auto; padding: 0.7rem 1.5rem;" onclick="loadHistorial()">Buscar</button>
+                <button class="btn-primary" style="width: auto; padding: 0.7rem 1.5rem;" onclick="loadHistorialDia()">Buscar</button>
             </div>
             <div id="historialResumen" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;"></div>
             <div id="historialLista"></div>
@@ -148,7 +82,7 @@
 
     </main>
 
-    <script src="js/app.js"></script>
+    <script src="js/empleado.js"></script>
 </body>
 
 </html>

@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/authMiddleware');
 const { login, getProfile, logout, validateLogin } = require('../controllers/adminController');
+const { loginEmpleado, validateLoginEmpleado } = require('../controllers/empleadoController');
 const { getAll: getAllEventos, create: createEvento, updateEvento, deleteEventoById } = require('../controllers/eventoController');
 const { getAll: getAllPromociones, create: createPromocion, updatePromocionById, deletePromocionById } = require('../controllers/promocionController');
 
 // Rutas públicas
 router.post('/login', validateLogin, login);
+router.post('/empleado/login', validateLoginEmpleado, loginEmpleado);
 router.post('/logout', logout);
 
 // Rutas protegidas

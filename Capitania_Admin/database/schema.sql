@@ -51,3 +51,16 @@ CREATE TABLE IF NOT EXISTS promociones (
     estatus ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 5. Tabla Empleados
+CREATE TABLE IF NOT EXISTS empleados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    nombre VARCHAR(100),
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar empleado de prueba (password: empleado123)
+INSERT IGNORE INTO empleados (username, password_hash, nombre)
+VALUES ('empleado_capitania', '$2a$10$8v5xI8iMvRkx7.Kj/Qk/hOV.dC7FqQ4i/B1l8KzS.wX/VqTxg6nRy', 'Empleado Capitania');

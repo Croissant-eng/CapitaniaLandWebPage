@@ -4,7 +4,7 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
     : 'https://7mzq2kk1-3001.usw3.devtunnels.ms/api';
 
 // Verificar autenticación en el Dashboard
-if (window.location.pathname.includes('dashboard.html')) {
+if (window.location.pathname.includes('empleado.html')) {
     const token = localStorage.getItem('capitania_token');
     const user = localStorage.getItem('capitania_user');
 
@@ -15,6 +15,7 @@ if (window.location.pathname.includes('dashboard.html')) {
         // Establecer fecha por defecto en el filtro de fecha
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('filtroFecha').value = today;
+        document.getElementById('historialFecha').value = today;
         loadReservas();
     }
 }
@@ -29,19 +30,12 @@ function switchTab(tabId) {
 
     const titles = {
         'reservas': 'Gestión de Reservas',
-        'eventos': 'Eventos Especiales',
-        'promociones': 'Promociones',
         'historial': 'Historial del Día'
     };
     document.getElementById('pageTitle').innerText = titles[tabId];
 
     if (tabId === 'reservas') loadReservas();
-    if (tabId === 'eventos') loadEventos();
-    if (tabId === 'promociones') loadPromociones();
-    if (tabId === 'historial') {
-        document.getElementById('historialFecha').value = new Date().toISOString().split('T')[0];
-        loadHistorial();
-    }
+    if (tabId === 'historial') loadHistorialDia();
 }
 
 function logout() {
@@ -156,135 +150,8 @@ async function updateEstatus(id, estatus) {
     }
 }
 
-// ── EVENTOS ──
-if (document.getElementById('formEvento')) {
-    document.getElementById('formEvento').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const payload = {
-            titulo: document.getElementById('ev_titulo').value,
-            fecha_evento: document.getElementById('ev_fecha').value,
-            descripcion: document.getElementById('ev_desc').value,
-            imagen_url: document.getElementById('ev_img').value || '/Images/Galeria/Seleccionadas/Corona.jpg'
-        };
-
-        try {
-            await fetchAuth('/eventos', {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-            document.getElementById('formEvento').reset();
-            loadEventos();
-        } catch (e) {
-            console.error(e);
-        }
-    });
-}
-
-async function loadEventos() {
-    try {
-        const res = await fetch(`${API_URL}/eventos`, { credentials: 'include' });
-        const data = await res.json();
-        const grid = document.getElementById('eventosGrid');
-        grid.innerHTML = '';
-
-        if (data.length === 0) {
-            grid.innerHTML = `<p style="color: var(--muted);">No hay eventos activos.</p>`;
-            return;
-        }
-
-        data.forEach(ev => {
-            grid.innerHTML += `
-                <div class="card">
-                    <img src="${ev.imagen_url ? (ev.imagen_url.startsWith('/') ? ev.imagen_url : '/' + ev.imagen_url) : ''}" alt="${ev.titulo}" class="card-img" onerror="this.onerror=null;this.style.display='none'">
-                    <div class="card-body">
-                        <h4 class="card-title">${ev.titulo}</h4>
-                        <p style="font-size: 0.8rem; color: var(--gold); margin-bottom: 0.5rem;">🗓 ${ev.fecha_evento}</p>
-                        <p class="card-desc">${ev.descripcion}</p>
-                        <button class="btn-danger" onclick="deleteEvento(${ev.id})">Eliminar</button>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-async function deleteEvento(id) {
-    if (!confirm('¿Eliminar este evento definitivamente?')) return;
-    try {
-        await fetchAuth(`/eventos/${id}`, { method: 'DELETE' });
-        loadEventos();
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-// ── PROMOCIONES ──
-if (document.getElementById('formPromo')) {
-    document.getElementById('formPromo').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const payload = {
-            nombre: document.getElementById('pr_nombre').value,
-            precio_destacado: document.getElementById('pr_precio').value,
-            descripcion: document.getElementById('pr_desc').value,
-            imagen_url: document.getElementById('pr_img').value || '/Images/Galeria/Seleccionadas/Chava preciosa.jpg'
-        };
-
-        try {
-            await fetchAuth('/promociones', {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-            document.getElementById('formPromo').reset();
-            loadPromociones();
-        } catch (e) {
-            console.error(e);
-        }
-    });
-}
-
-async function loadPromociones() {
-    try {
-        const res = await fetch(`${API_URL}/promociones`, { credentials: 'include' });
-        const data = await res.json();
-        const grid = document.getElementById('promocionesGrid');
-        grid.innerHTML = '';
-
-        if (data.length === 0) {
-            grid.innerHTML = `<p style="color: var(--muted);">No hay promociones activas.</p>`;
-            return;
-        }
-
-        data.forEach(pr => {
-            grid.innerHTML += `
-                <div class="card">
-                    <img src="${pr.imagen_url ? (pr.imagen_url.startsWith('/') ? pr.imagen_url : '/' + pr.imagen_url) : ''}" alt="${pr.nombre}" class="card-img" onerror="this.onerror=null;this.style.display='none'">
-                    <div class="card-body">
-                        <h4 class="card-title">${pr.nombre} <span style="float:right; color:var(--gold-xl);">${pr.precio_destacado || ''}</span></h4>
-                        <p class="card-desc" style="margin-top: 1rem;">${pr.descripcion}</p>
-                        <button class="btn-danger" onclick="deletePromo(${pr.id})">Eliminar</button>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-async function deletePromo(id) {
-    if (!confirm('¿Eliminar esta promoción definitivamente?')) return;
-    try {
-        await fetchAuth(`/promociones/${id}`, { method: 'DELETE' });
-        loadPromociones();
-    } catch (e) {
-        console.error(e);
-    }
-}
-
 // ── HISTORIAL DEL DÍA ──
-async function loadHistorial() {
+async function loadHistorialDia() {
     const fechaInput = document.getElementById('historialFecha');
     const fecha = fechaInput.value;
     if (!fecha) return;
