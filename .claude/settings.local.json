@@ -14,7 +14,19 @@
       "Bash(npm start *)",
       "Bash(xargs grep -l \"localhost:3000\\\\|3000\")",
       "Bash(xargs grep -l \"fetch\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(taskkill *)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(echo $env:PORT)",
+      "PowerShell([Environment]::GetEnvironmentVariable\\(\"PORT\",\"User\"\\))",
+      "PowerShell([Environment]::GetEnvironmentVariable\\(\"PORT\",\"Machine\"\\))",
+      "PowerShell($env:PORT=3001; node \"C:\\\\Users\\\\Workstation R9 Pro\\\\Documents\\\\GitHub\\\\CapitaniaLandWebPage\\\\Capitania_Admin/backend/server.js\")",
+      "PowerShell(devtunnel *)",
+      "PowerShell(winget install *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Workstation R9 Pro\\\\Documents\\\\GitHub\\\\CapitaniaLandWebPage\\\\Capitania_Admin\\\\frontend\" -File | Where-Object { $_.Name -eq 'app.js' })",
+      "PowerShell(Find-Content *)"
     ]
   }
 }

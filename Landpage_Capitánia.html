@@ -2474,7 +2474,7 @@
 
       document.getElementById('reserva-detail').textContent = detail;
 
-      fetch('http://localhost:3001/api/reservas', {
+      fetch('https://7mzq2kk1-3001.usw3.devtunnels.ms/api/reservas', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nombre, telefono: tel, fecha, hora, personas, sucursal, notas })
@@ -2554,7 +2554,7 @@
         try {
             // Cargar Eventos
             console.log("Intentando fetch a /api/eventos");
-            const resE = await fetch('http://localhost:3001/api/eventos', {
+            const resE = await fetch('https://7mzq2kk1-3001.usw3.devtunnels.ms/api/eventos', {
                 credentials: 'include'
             });
 
@@ -2568,6 +2568,7 @@
             if(contE && eventos && Array.isArray(eventos)) {
                 contE.innerHTML = eventos.map(e => `
                     <article class="evento-card">
+                        ${e.imagen_url ? `<div class="evento-media"><img src="https://7mzq2kk1-3001.usw3.devtunnels.ms${e.imagen_url}" alt="${e.titulo}" style="width:100%;border-radius:8px;"></div>` : ''}
                         <div class="evento-info">
                             <h3>${e.titulo}</h3>
                             <p>${e.descripcion}</p>
@@ -2586,7 +2587,7 @@
         try {
             // Cargar Promociones
             console.log("Intentando fetch a /api/promociones");
-            const resP = await fetch('http://localhost:3001/api/promociones', {
+            const resP = await fetch('https://7mzq2kk1-3001.usw3.devtunnels.ms/api/promociones', {
                 credentials: 'include'
             });
 
@@ -2600,6 +2601,7 @@
             if(contP && promos && Array.isArray(promos)) {
                 contP.innerHTML = promos.map(p => `
                     <article class="evento-card">
+                        ${p.imagen_url ? `<div class="evento-media"><img src="https://7mzq2kk1-3001.usw3.devtunnels.ms${p.imagen_url}" alt="${p.titulo}" style="width:100%;border-radius:8px;"></div>` : ''}
                         <div class="evento-info">
                             <h3>${p.titulo}</h3>
                             <p>${p.descripcion}</p>

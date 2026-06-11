@@ -12,7 +12,6 @@ if (window.location.pathname.includes('dashboard.html')) {
         window.location.href = 'index.html';
     } else {
         document.getElementById('userName').innerText = user;
-        // Establecer fecha por defecto en el filtro de fecha
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('filtroFecha').value = today;
         loadReservas();
@@ -54,7 +53,7 @@ function logout() {
 async function fetchAuth(url, options = {}) {
     const token = localStorage.getItem('capitania_token');
     const headers = {
-        'Content-Type': 'application/json',
+        ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         ...options.headers
     };
@@ -81,7 +80,6 @@ async function loadReservas() {
         const res = await fetchAuth('/reservas');
         const data = await res.json();
         todasLasReservas = data;
-        // Filtrar solo reservas pendientes
         const pendientes = data.filter(r => r.estatus === 'Pendiente');
         renderReservas(pendientes);
     } catch (e) {
@@ -95,12 +93,10 @@ function filtrarReservas() {
 
     let filtered = todasLasReservas;
 
-    // Filtrar por sucursal si se seleccionó
     if (sucursal) {
         filtered = filtered.filter(r => r.sucursal === sucursal);
     }
 
-    // Filtrar por fecha si se seleccionó
     if (fecha) {
         filtered = filtered.filter(r => {
             const fechaReserva = new Date(r.fecha).toISOString().split('T')[0];
@@ -149,7 +145,6 @@ async function updateEstatus(id, estatus) {
             method: 'PUT',
             body: JSON.stringify({ estatus })
         });
-        // Recargar las reservas pendientes después de confirmar o rechazar
         loadReservas();
     } catch (e) {
         console.error(e);
@@ -220,6 +215,7 @@ async function loadEventos() {
                         <h4 class="card-title">${ev.titulo}</h4>
                         <p style="font-size: 0.8rem; color: var(--gold); margin-bottom: 0.5rem;">🗓 ${ev.fecha_evento}</p>
                         <p class="card-desc">${ev.descripcion}</p>
+                        <button class="btn-secondary" onclick="abrirEditarEvento(${ev.id})" style="margin-right:0.5rem;">✏️ Editar</button>
                         <button class="btn-danger" onclick="deleteEvento(${ev.id})">Eliminar</button>
                     </div>
                 </div>
@@ -227,6 +223,38 @@ async function loadEventos() {
         });
     } catch (e) {
         console.error(e);
+    }
+}
+
+function abrirEditarEvento(id) {
+    // Buscar datos del evento actual
+    fetch(`${API_URL}/eventos`, { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+            const ev = data.find(e => e.id === id);
+            if (!ev) return;
+
+            const titulo = prompt('Título del evento:', ev.titulo);
+            if (titulo === null) return;
+            const fecha = prompt('Fecha del evento:', ev.fecha_evento);
+            if (fecha === null) return;
+            const descripcion = prompt('Descripción:', ev.descripcion);
+            if (descripcion === null) return;
+
+            editarEvento(id, titulo, fecha, descripcion);
+        });
+}
+
+async function editarEvento(id, titulo, fecha, descripcion) {
+    try {
+        await fetchAuth(`/eventos/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ titulo, fecha_evento: fecha, descripcion })
+        });
+        loadEventos();
+    } catch (e) {
+        console.error(e);
+        alert('Error al editar el evento');
     }
 }
 
@@ -303,6 +331,7 @@ async function loadPromociones() {
                     <div class="card-body">
                         <h4 class="card-title">${pr.nombre} <span style="float:right; color:var(--gold-xl);">${pr.precio_destacado || ''}</span></h4>
                         <p class="card-desc" style="margin-top: 1rem;">${pr.descripcion}</p>
+                        <button class="btn-secondary" onclick="abrirEditarPromo(${pr.id})" style="margin-right:0.5rem;">✏️ Editar</button>
                         <button class="btn-danger" onclick="deletePromo(${pr.id})">Eliminar</button>
                     </div>
                 </div>
@@ -310,6 +339,37 @@ async function loadPromociones() {
         });
     } catch (e) {
         console.error(e);
+    }
+}
+
+function abrirEditarPromo(id) {
+    fetch(`${API_URL}/promociones`, { credentials: 'include' })
+        .then(r => r.json())
+        .then(data => {
+            const pr = data.find(p => p.id === id);
+            if (!pr) return;
+
+            const nombre = prompt('Nombre de la promoción:', pr.nombre);
+            if (nombre === null) return;
+            const precio = prompt('Precio o etiqueta destacada:', pr.precio_destacado || '');
+            if (precio === null) return;
+            const descripcion = prompt('Descripción:', pr.descripcion);
+            if (descripcion === null) return;
+
+            editarPromo(id, nombre, precio, descripcion);
+        });
+}
+
+async function editarPromo(id, nombre, precio_destacado, descripcion) {
+    try {
+        await fetchAuth(`/promociones/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ nombre, precio_destacado, descripcion })
+        });
+        loadPromociones();
+    } catch (e) {
+        console.error(e);
+        alert('Error al editar la promoción');
     }
 }
 

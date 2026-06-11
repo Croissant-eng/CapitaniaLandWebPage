@@ -143,3 +143,5 @@ body { background-color: var(--dark); color: var(--cream); min-height: 100vh; di
     gap: 0.8rem;
   }
 }
+.btn-secondary { padding: 0.5rem 1rem; background: rgba(200,134,10,0.15); color: var(--gold-l); border: 1px solid rgba(200,134,10,0.3); border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-top: 0.5rem; transition: all 0.2s; }
+.btn-secondary:hover { background: rgba(200,134,10,0.3); }
