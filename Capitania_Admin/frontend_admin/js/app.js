@@ -160,11 +160,31 @@ async function updateEstatus(id, estatus) {
 if (document.getElementById('formEvento')) {
     document.getElementById('formEvento').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const file = document.getElementById('eventoImagen').files[0];
+        let imageUrl = '/Images/Galeria/Seleccionadas/Corona.jpg';
+
+        if (file) {
+            const formData = new FormData();
+            formData.append('imagen', file);
+            try {
+                const uploadRes = await fetchAuth('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const uploadData = await uploadRes.json();
+                if (uploadData.success) imageUrl = uploadData.imageUrl;
+            } catch (uploadError) {
+                console.error('Error subiendo imagen:', uploadError);
+                alert('Error al subir la imagen del evento');
+                return;
+            }
+        }
+
         const payload = {
             titulo: document.getElementById('ev_titulo').value,
             fecha_evento: document.getElementById('ev_fecha').value,
             descripcion: document.getElementById('ev_desc').value,
-            imagen_url: document.getElementById('ev_img').value || '/Images/Galeria/Seleccionadas/Corona.jpg'
+            imagen_url: imageUrl
         };
 
         try {
@@ -224,11 +244,31 @@ async function deleteEvento(id) {
 if (document.getElementById('formPromo')) {
     document.getElementById('formPromo').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const file = document.getElementById('promocionImagen').files[0];
+        let imageUrl = '/Images/Galeria/Seleccionadas/Chava preciosa.jpg';
+
+        if (file) {
+            const formData = new FormData();
+            formData.append('imagen', file);
+            try {
+                const uploadRes = await fetchAuth('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const uploadData = await uploadRes.json();
+                if (uploadData.success) imageUrl = uploadData.imageUrl;
+            } catch (uploadError) {
+                console.error('Error subiendo imagen:', uploadError);
+                alert('Error al subir la imagen de la promoción');
+                return;
+            }
+        }
+
         const payload = {
             nombre: document.getElementById('pr_nombre').value,
             precio_destacado: document.getElementById('pr_precio').value,
             descripcion: document.getElementById('pr_desc').value,
-            imagen_url: document.getElementById('pr_img').value || '/Images/Galeria/Seleccionadas/Chava preciosa.jpg'
+            imagen_url: imageUrl
         };
 
         try {

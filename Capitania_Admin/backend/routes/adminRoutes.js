@@ -5,6 +5,8 @@ const { login, getProfile, logout, validateLogin } = require('../controllers/adm
 const { loginEmpleado, validateLoginEmpleado } = require('../controllers/empleadoController');
 const { getAll: getAllEventos, create: createEvento, updateEvento, deleteEventoById } = require('../controllers/eventoController');
 const { getAll: getAllPromociones, create: createPromocion, updatePromocionById, deletePromocionById } = require('../controllers/promocionController');
+const upload = require('../middleware/uploadMiddleware');
+const { uploadImage } = require('../controllers/uploadController');
 
 // Rutas públicas
 router.post('/login', validateLogin, login);
@@ -24,5 +26,8 @@ router.get('/admin/promociones', authMiddleware, getAllPromociones);
 router.post('/admin/promociones', authMiddleware, createPromocion);
 router.put('/admin/promociones/:id', authMiddleware, updatePromocionById);
 router.delete('/admin/promociones/:id', authMiddleware, deletePromocionById);
+
+// Ruta para subida de imágenes
+router.post('/upload', authMiddleware, upload.single('imagen'), uploadImage);
 
 module.exports = router;
