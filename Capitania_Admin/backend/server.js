@@ -41,7 +41,7 @@ app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 app.use((req, res, next) => {
     if (req.path === '/api/upload') return next();
-    express.json()(req, res, next);
+    express.json({ limit: '50mb' })(req, res, next);
 });
 
 // --- RUTAS API ---

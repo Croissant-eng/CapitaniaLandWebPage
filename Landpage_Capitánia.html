@@ -1481,7 +1481,11 @@
     /* ── RESPONSIVO ── */
     @media (max-width: 768px) {
       nav {
-        padding: 1.2rem 1.5rem;
+        padding: 0.5rem 1.2rem;
+      }
+
+      .nav-logo-img {
+        height: 60px;
       }
 
       .nav-links {
@@ -1603,13 +1607,13 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-bg">
-      <video class="hero-video" autoplay muted loop playsinline>
+      <video class="hero-video" autoplay muted loop playsinline preload="auto">
         <source src="Videos/Animacion(Lobby).mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-logo-wrap">
       <div class="hero-brand">
-        <img src="Images/Galeria/Opcion 1/Logo Capitania Transparente.png" alt="Capitanía" class="hero-brand-img">
+        <img loading="lazy" src="Images/Galeria/Opcion 1/Logo Capitania Transparente.png" alt="Capitanía" class="hero-brand-img">
       </div>
       <div class="hero-tagline">Mariscos · Cócteles · Experiencia</div>
       <div class="hero-sub">
@@ -1635,7 +1639,7 @@
         <!-- Evento 1 -->
         <article class="evento-card">
           <div class="evento-media">
-            <img src="Images/Galeria/Opcion 2/Image 3.jpg" alt="Evento Especial">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 3.jpg" alt="Evento Especial">
           </div>
           <div class="evento-info">
             <h3>Noches de DJ Set</h3>
@@ -1647,7 +1651,7 @@
         <!-- Evento 2 -->
         <article class="evento-card">
           <div class="evento-media">
-            <img src="Images/Galeria/Opcion 2/Image 4.jpg" alt="Evento Especial">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 4.jpg" alt="Evento Especial">
           </div>
           <div class="evento-info">
             <h3>Tardes de Mixología</h3>
@@ -1659,7 +1663,7 @@
         <!-- Evento 3 -->
         <article class="evento-card">
           <div class="evento-media">
-            <img src="Images\Galeria\Opcion 2\Moet.jpg"
+            <img loading="lazy" src="Images\Galeria\Opcion 2\Moet.jpg"
               alt="Evento Especial">
           </div>
           <div class="evento-info">
@@ -1676,7 +1680,7 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="about-bg-video">
-      <video autoplay muted loop playsinline>
+      <video muted loop playsinline preload="none" class="lazy-video">
         <source src="Videos/Animacion(Seccion todavia no definida).mp4" type="video/mp4">
       </video>
     </div>
@@ -1713,32 +1717,32 @@
         </div>
         <div class="about-media-grid reveal">
           <div class="about-media-item span-2">
-            <video autoplay muted loop playsinline>
+            <video muted loop playsinline preload="none" class="lazy-video">
               <source src="Videos/Video About Us.mp4" type="video/mp4">
             </video>
           </div>
           <div class="about-media-item tall">
-            <img src="Images/Galeria/Opcion 2/Image 1.jpg" alt="Interior Capitanía">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 1.jpg" alt="Interior Capitanía">
           </div>
           <div class="about-media-item">
-            <img src="Images/Galeria/Opcion 2/Image 2.jpg" alt="Capitanía ambiente">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 2.jpg" alt="Capitanía ambiente">
           </div>
           <div class="about-media-item">
-            <video autoplay muted loop playsinline>
+            <video muted loop playsinline preload="none" class="lazy-video">
               <source src="Videos/Video About Us 2.mp4" type="video/mp4">
             </video>
           </div>
           <div class="about-media-item span-2">
-            <img src="Images/Galeria/Opcion 2/Hamburguer.jpg" alt="Hamburguesa Capitanía">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Hamburguer.jpg" alt="Hamburguesa Capitanía">
           </div>
           <div class="about-media-item">
-            <img src="Images/Galeria/Opcion 2/Pato.jpg" alt="Pato">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Pato.jpg" alt="Pato">
           </div>
           <div class="about-media-item">
-            <img src="Images/Galeria/Opcion 2/Moet.jpg" alt="Moet">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Moet.jpg" alt="Moet">
           </div>
           <div class="about-media-item span-2">
-            <video autoplay muted loop playsinline>
+            <video muted loop playsinline preload="none" class="lazy-video">
               <source src="Videos/Video About Us 3.mp4" type="video/mp4">
             </video>
           </div>
@@ -1759,7 +1763,7 @@
         <!-- Promo 1 -->
         <article class="promo-card">
           <div class="promo-img">
-            <img src="Images/Galeria/Opcion 2/Image 1.jpg" alt="Promoción Cerveza">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 1.jpg" alt="Promoción Cerveza">
           </div>
           <div class="promo-body">
             <h3>Jueves Godín</h3>
@@ -1770,7 +1774,7 @@
         <!-- Promo 2 -->
         <article class="promo-card">
           <div class="promo-img">
-            <img src="Images/Galeria/Opcion 2/Image 2.jpg" alt="Promoción Cumpleañero">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Image 2.jpg" alt="Promoción Cumpleañero">
           </div>
           <div class="promo-body">
             <h3>Promo Cumpleañero</h3>
@@ -1781,7 +1785,7 @@
         <!-- Promo 3 -->
         <article class="promo-card">
           <div class="promo-img">
-            <img src="Images/Galeria/Opcion 2/Hamburguer.jpg" alt="Promoción Combo">
+            <img loading="lazy" src="Images/Galeria/Opcion 2/Hamburguer.jpg" alt="Promoción Combo">
           </div>
           <div class="promo-body">
             <h3>Domingo Familiar</h3>
@@ -2077,68 +2081,68 @@
       <div class="gallery-grid reveal">
         <!-- Videos -->
         <div class="gal-item span-both">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="none" class="lazy-video">
             <source src="Images/Galeria/Seleccionadas/Capi Fest 2.0.mp4" type="video/mp4">
           </video>
         </div>
         <div class="gal-item span-col-2">
-          <img src="Images/Galeria/Seleccionadas/Avion con narajanda.jpg" alt="Avion con naranja">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Avion con narajanda.jpg" alt="Avion con naranja">
         </div>
         <div class="gal-item span-row-2">
-          <img src="Images/Galeria/Seleccionadas/Amigos.jpg" alt="Amigos">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Amigos.jpg" alt="Amigos">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Bebida de Nigger.jpg" alt="Bebida">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Bebida de Nigger.jpg" alt="Bebida">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Bebida de William.jpg" alt="Bebida">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Bebida de William.jpg" alt="Bebida">
         </div>
         <div class="gal-item span-col-2">
-          <img src="Images/Galeria/Seleccionadas/Chava preciosa.jpg" alt="Chava">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Chava preciosa.jpg" alt="Chava">
         </div>
 
         <div class="gal-item span-both">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="none" class="lazy-video">
             <source src="Images/Galeria/Seleccionadas/Video Cerveza y tostada.mp4" type="video/mp4">
           </video>
         </div>
         <div class="gal-item">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="none" class="lazy-video">
             <source src="Images/Galeria/Seleccionadas/Capiween.mp4" type="video/mp4">
           </video>
         </div>
         <div class="gal-item span-row-2">
-          <img src="Images/Galeria/Seleccionadas/Micheviche.jpg" alt="Micheviche">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Micheviche.jpg" alt="Micheviche">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Chicken roll.jpg" alt="Chicken roll">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Chicken roll.jpg" alt="Chicken roll">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Corona.jpg" alt="Corona">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Corona.jpg" alt="Corona">
         </div>
 
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/El kikis.jpg" alt="El kikis">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/El kikis.jpg" alt="El kikis">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Miche nigga.jpg" alt="Michelada">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Miche nigga.jpg" alt="Michelada">
         </div>
         <div class="gal-item">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="none" class="lazy-video">
             <source src="Images/Galeria/Seleccionadas/Video Bebidas.mp4" type="video/mp4">
           </video>
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Nachos y miche.jpg" alt="Nachos">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Nachos y miche.jpg" alt="Nachos">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Tequila.jpeg" alt="Tequila">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Tequila.jpeg" alt="Tequila">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/Tostada.jpg" alt="Tostada">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/Tostada.jpg" alt="Tostada">
         </div>
         <div class="gal-item">
-          <img src="Images/Galeria/Seleccionadas/imagen 2.jpg" alt="Imagen">
+          <img loading="lazy" src="Images/Galeria/Seleccionadas/imagen 2.jpg" alt="Imagen">
         </div>
       </div>
     </div>
@@ -2340,7 +2344,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="#hero" class="footer-logo">
-          <img src="Images/Galeria/Opcion 1/Logo Capitania Transparente.png" alt="Capitanía" class="footer-logo-img">
+          <img loading="lazy" src="Images/Galeria/Opcion 1/Logo Capitania Transparente.png" alt="Capitanía" class="footer-logo-img">
         </a>
         <p>Restaurante-bar de mariscos y coctelería en León, Guanajuato. Vive una experiencia única donde el mar se
           fusiona con la fiesta.</p>
@@ -2498,15 +2502,41 @@
           alert('Hubo un problema al enviar la reserva. Intenta de nuevo.');
       });
     }
+
+    // ── LAZY VIDEO LOADING ──
+    (function() {
+      const lazyVideos = document.querySelectorAll('.lazy-video');
+      if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              if (video.preload === 'none') {
+                video.preload = 'metadata';
+                video.load();
+              }
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, { rootMargin: '200px' });
+        lazyVideos.forEach(v => videoObserver.observe(v));
+      } else {
+        // Fallback: just load and play all
+        lazyVideos.forEach(v => { v.preload = 'metadata'; v.play().catch(() => {}); });
+      }
+    })();
+
     // ── PRELOADER ──
     (function () {
       const preloader = document.getElementById('preloader');
+      const video = document.getElementById('preloader-video');
       let pageReady = false;
-      let minTimePassed = false;
-      const MIN_DISPLAY_MS = 2800;
+      let videoEnded = false;
 
       function dismissPreloader() {
-        if (!pageReady || !minTimePassed) return;
+        if (!pageReady || !videoEnded) return;
         preloader.classList.add('hide');
         document.body.classList.remove('loading');
         preloader.addEventListener('transitionend', () => {
@@ -2514,9 +2544,24 @@
         }, { once: true });
       }
 
-      setTimeout(() => { minTimePassed = true; dismissPreloader(); }, MIN_DISPLAY_MS);
+      // Esperar a que el video de la animación termine COMPLETO
+      if (video) {
+        video.addEventListener('ended', () => {
+          videoEnded = true;
+          dismissPreloader();
+        });
+        // Si el video falla en cargar, no bloquear la página
+        video.addEventListener('error', () => {
+          videoEnded = true;
+          dismissPreloader();
+        });
+      } else {
+        videoEnded = true;
+      }
+
       window.addEventListener('load', () => { pageReady = true; dismissPreloader(); });
-      setTimeout(() => { pageReady = true; minTimePassed = true; dismissPreloader(); }, 8000);
+      // Failsafe: si después de 15 segundos no ha pasado nada, mostrar la página
+      setTimeout(() => { pageReady = true; videoEnded = true; dismissPreloader(); }, 15000);
     })();
 
     // ── MENU SHOW ALL ──
@@ -2545,12 +2590,6 @@
     }
     // Cargar Eventos y Promociones
     async function cargarDatos() {
-        // Mostrar preloader
-        const preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.display = 'block';
-        }
-
         try {
             // Cargar Eventos
             console.log("Intentando fetch a /api/eventos");
@@ -2568,7 +2607,7 @@
             if(contE && eventos && Array.isArray(eventos)) {
                 contE.innerHTML = eventos.map(e => `
                     <article class="evento-card">
-                        ${e.imagen_url ? `<div class="evento-media"><img src="https://7mzq2kk1-3001.usw3.devtunnels.ms${e.imagen_url}" alt="${e.titulo}" style="width:100%;border-radius:8px;"></div>` : ''}
+                        ${e.imagen_url ? `<div class="evento-media"><img loading="lazy" src="https://7mzq2kk1-3001.usw3.devtunnels.ms${e.imagen_url}" alt="${e.titulo}" style="width:100%;border-radius:8px;"></div>` : ''}
                         <div class="evento-info">
                             <h3>${e.titulo}</h3>
                             <p>${e.descripcion}</p>
@@ -2601,9 +2640,9 @@
             if(contP && promos && Array.isArray(promos)) {
                 contP.innerHTML = promos.map(p => `
                     <article class="evento-card">
-                        ${p.imagen_url ? `<div class="evento-media"><img src="https://7mzq2kk1-3001.usw3.devtunnels.ms${p.imagen_url}" alt="${p.titulo}" style="width:100%;border-radius:8px;"></div>` : ''}
+                        ${p.imagen_url ? `<div class="evento-media"><img loading="lazy" src="https://7mzq2kk1-3001.usw3.devtunnels.ms${p.imagen_url}" alt="${p.nombre}" style="width:100%;border-radius:8px;"></div>` : ''}
                         <div class="evento-info">
-                            <h3>${p.titulo}</h3>
+                            <h3>${p.nombre}${p.precio_destacado ? ` <span style="float:right;color:#ffc04a;">${p.precio_destacado}</span>` : ''}</h3>
                             <p>${p.descripcion}</p>
                         </div>
                     </article>
@@ -2614,11 +2653,6 @@
             }
         } catch(e) {
             console.error("Error en promociones:", e);
-        } finally {
-            // Ocultar preloader en cualquier caso
-            if (preloader) {
-                preloader.style.display = 'none';
-            }
         }
     }
 
