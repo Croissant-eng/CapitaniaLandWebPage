@@ -20,6 +20,7 @@ app.use(cors({
         // Allow requests from localhost and devtunnel domains
         if (!origin ||
             origin.includes('localhost') ||
+            origin.includes('127.0.0.1') ||
             origin.includes('.devtunnels.ms')) {
             callback(null, true);
         } else {
