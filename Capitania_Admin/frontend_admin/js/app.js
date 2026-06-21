@@ -2,11 +2,11 @@
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3001/api'
     : 'https://7mzq2kk1-3001.usw3.devtunnels.ms/api';
-
+ 
 // Variables globales para archivos seleccionados
 let eventoImagenFile = null;
 let promoImagenFile = null;
-
+ 
 // Captura de archivos al seleccionarlos
 function setupFileCapture() {
     const eventoInput = document.getElementById('eventoImagen');
@@ -27,11 +27,11 @@ function setupFileCapture() {
 document.addEventListener('DOMContentLoaded', setupFileCapture);
 if (document.readyState !== 'loading') setupFileCapture();
 setInterval(setupFileCapture, 1500);
-
+ 
 // Auth check en dashboard
 if (window.location.pathname.includes('dashboard.html')) {
-    const token = localStorage.getItem('capitania_token');
-    const user = localStorage.getItem('capitania_user');
+    const token = sessionStorage.getItem('capitania_token');
+    const user = sessionStorage.getItem('capitania_user');
     if (!token) {
         window.location.href = 'index.html';
     } else {
@@ -41,7 +41,7 @@ if (window.location.pathname.includes('dashboard.html')) {
         loadReservas();
     }
 }
-
+ 
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -57,15 +57,15 @@ function switchTab(tabId) {
         loadHistorial();
     }
 }
-
+ 
 function logout() {
-    localStorage.removeItem('capitania_token');
-    localStorage.removeItem('capitania_user');
+    sessionStorage.removeItem('capitania_token');
+    sessionStorage.removeItem('capitania_user');
     window.location.href = 'index.html';
 }
-
+ 
 async function fetchAuth(url, options = {}) {
-    const token = localStorage.getItem('capitania_token');
+    const token = sessionStorage.getItem('capitania_token');
     const headers = {
         ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
@@ -73,17 +73,17 @@ async function fetchAuth(url, options = {}) {
     };
     const res = await fetch(`${API_URL}${url}`, { ...options, headers, credentials: 'include' });
     if (res.status === 401) {
-        localStorage.removeItem('capitania_token');
-        localStorage.removeItem('capitania_user');
+        sessionStorage.removeItem('capitania_token');
+        sessionStorage.removeItem('capitania_user');
         window.location.href = 'index.html';
         throw new Error('Sesión expirada');
     }
     return res;
 }
-
+ 
 // ── RESERVAS ──
 let todasLasReservas = [];
-
+ 
 async function loadReservas() {
     try {
         const res = await fetchAuth('/reservas');
@@ -92,7 +92,7 @@ async function loadReservas() {
         renderReservas(data.filter(r => r.estatus === 'Pendiente'));
     } catch (e) { console.error(e); }
 }
-
+ 
 function filtrarReservas() {
     const sucursal = document.getElementById('filtroSucursal').value;
     const fecha = document.getElementById('filtroFecha').value;
@@ -101,7 +101,7 @@ function filtrarReservas() {
     if (fecha) filtered = filtered.filter(r => new Date(r.fecha).toISOString().split('T')[0] === fecha);
     renderReservas(filtered);
 }
-
+ 
 function renderReservas(data) {
     const tbody = document.getElementById('reservasTableBody');
     tbody.innerHTML = '';
@@ -115,7 +115,7 @@ function renderReservas(data) {
         tbody.innerHTML += `<tr><td>#${r.id}</td><td>${r.nombre || r.nombre_completo || '-'}</td><td>${r.sucursal || '-'}</td><td>${date} - ${r.hora}</td><td>${r.personas}</td><td>${r.telefono || '-'}</td><td><span class="status-badge ${badgeClass}">${r.estatus}</span></td><td><button class="action-btn approve" onclick="updateEstatus(${r.id}, 'Confirmada')">✓</button><button class="action-btn reject" onclick="updateEstatus(${r.id}, 'Cancelada')">✕</button></td></tr>`;
     });
 }
-
+ 
 async function updateEstatus(id, estatus) {
     if (!confirm(`¿Marcar la reserva como ${estatus}?`)) return;
     try {
@@ -123,12 +123,12 @@ async function updateEstatus(id, estatus) {
         loadReservas();
     } catch (e) { console.error(e); }
 }
-
+ 
 // ── EVENTOS ──
 async function submitEvento() {
     const file = eventoImagenFile || document.getElementById('eventoImagen').files[0];
     let imageUrl = '/Images/Galeria/Seleccionadas/Corona.jpg';
-
+ 
     if (file) {
         try {
             const formData = new FormData();
@@ -142,14 +142,14 @@ async function submitEvento() {
             return;
         }
     }
-
+ 
     const payload = {
         titulo: document.getElementById('ev_titulo').value,
         fecha_evento: document.getElementById('ev_fecha').value,
         descripcion: document.getElementById('ev_desc').value,
         imagen_url: imageUrl
     };
-
+ 
     try {
         await fetchAuth('/eventos', { method: 'POST', body: JSON.stringify(payload) });
         eventoImagenFile = null;
@@ -159,7 +159,7 @@ async function submitEvento() {
         alert('Error al publicar el evento');
     }
 }
-
+ 
 async function loadEventos() {
     try {
         const res = await fetch(`${API_URL}/eventos`, { credentials: 'include' });
@@ -173,7 +173,7 @@ async function loadEventos() {
         });
     } catch (e) { console.error(e); }
 }
-
+ 
 function abrirEditarEvento(id) {
     fetch(`${API_URL}/eventos`, { credentials: 'include' })
         .then(r => r.json())
@@ -189,14 +189,14 @@ function abrirEditarEvento(id) {
             editarEvento(id, titulo, fecha, descripcion);
         });
 }
-
+ 
 async function editarEvento(id, titulo, fecha, descripcion) {
     try {
         await fetchAuth(`/eventos/${id}`, { method: 'PUT', body: JSON.stringify({ titulo, fecha_evento: fecha, descripcion }) });
         loadEventos();
     } catch (e) { alert('Error al editar el evento'); }
 }
-
+ 
 async function deleteEvento(id) {
     if (!confirm('¿Eliminar este evento?')) return;
     try {
@@ -204,12 +204,12 @@ async function deleteEvento(id) {
         loadEventos();
     } catch (e) { console.error(e); }
 }
-
+ 
 // ── PROMOCIONES ──
 async function submitPromo() {
     const file = promoImagenFile || document.getElementById('promocionImagen').files[0];
     let imageUrl = '/Images/Galeria/Seleccionadas/Chava preciosa.jpg';
-
+ 
     if (file) {
         try {
             const formData = new FormData();
@@ -223,14 +223,14 @@ async function submitPromo() {
             return;
         }
     }
-
+ 
     const payload = {
         nombre: document.getElementById('pr_nombre').value,
         precio_destacado: document.getElementById('pr_precio').value,
         descripcion: document.getElementById('pr_desc').value,
         imagen_url: imageUrl
     };
-
+ 
     try {
         await fetchAuth('/promociones', { method: 'POST', body: JSON.stringify(payload) });
         promoImagenFile = null;
@@ -240,7 +240,7 @@ async function submitPromo() {
         alert('Error al publicar la promoción');
     }
 }
-
+ 
 async function loadPromociones() {
     try {
         const res = await fetch(`${API_URL}/promociones`, { credentials: 'include' });
@@ -254,7 +254,7 @@ async function loadPromociones() {
         });
     } catch (e) { console.error(e); }
 }
-
+ 
 function abrirEditarPromo(id) {
     fetch(`${API_URL}/promociones`, { credentials: 'include' })
         .then(r => r.json())
@@ -270,14 +270,14 @@ function abrirEditarPromo(id) {
             editarPromo(id, nombre, precio, descripcion);
         });
 }
-
+ 
 async function editarPromo(id, nombre, precio_destacado, descripcion) {
     try {
         await fetchAuth(`/promociones/${id}`, { method: 'PUT', body: JSON.stringify({ nombre, precio_destacado, descripcion }) });
         loadPromociones();
     } catch (e) { alert('Error al editar la promoción'); }
 }
-
+ 
 async function deletePromo(id) {
     if (!confirm('¿Eliminar esta promoción?')) return;
     try {
@@ -285,7 +285,7 @@ async function deletePromo(id) {
         loadPromociones();
     } catch (e) { console.error(e); }
 }
-
+ 
 // ── HISTORIAL ──
 async function loadHistorial() {
     const fecha = document.getElementById('historialFecha').value;
@@ -299,7 +299,7 @@ async function loadHistorial() {
         const pendientes = reservasDelDia.filter(r => r.estatus === 'Pendiente').length;
         const canceladas = reservasDelDia.filter(r => r.estatus === 'Cancelada').length;
         const personas = reservasDelDia.reduce((s, r) => s + parseInt(r.personas || 0), 0);
-
+ 
         document.getElementById('historialResumen').innerHTML = `
             <div style="background: var(--dark2); border: 1px solid rgba(200,134,10,0.2); border-radius: 8px; padding: 1.2rem 2rem; text-align: center; flex: 1;"><div style="font-size: 2rem; color: var(--gold-l); font-weight: 600;">${total}</div><div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Total</div></div>
             <div style="background: var(--dark2); border: 1px solid rgba(40,167,69,0.3); border-radius: 8px; padding: 1.2rem 2rem; text-align: center; flex: 1;"><div style="font-size: 2rem; color: #5cb85c; font-weight: 600;">${confirmadas}</div><div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Confirmadas</div></div>
@@ -307,18 +307,18 @@ async function loadHistorial() {
             <div style="background: var(--dark2); border: 1px solid rgba(255,74,74,0.2); border-radius: 8px; padding: 1.2rem 2rem; text-align: center; flex: 1;"><div style="font-size: 2rem; color: var(--danger); font-weight: 600;">${canceladas}</div><div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Canceladas</div></div>
             <div style="background: var(--dark2); border: 1px solid rgba(200,134,10,0.2); border-radius: 8px; padding: 1.2rem 2rem; text-align: center; flex: 1;"><div style="font-size: 2rem; color: var(--gold-xl); font-weight: 600;">${personas}</div><div style="font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">Personas</div></div>
         `;
-
+ 
         if (reservasDelDia.length === 0) {
             document.getElementById('historialLista').innerHTML = `<div style="text-align: center; padding: 3rem; color: var(--muted);">No hay reservas para esta fecha.</div>`;
             return;
         }
-
+ 
         const porHora = {};
         reservasDelDia.sort((a, b) => a.hora.localeCompare(b.hora)).forEach(r => {
             if (!porHora[r.hora]) porHora[r.hora] = [];
             porHora[r.hora].push(r);
         });
-
+ 
         let html = '';
         Object.keys(porHora).forEach(hora => {
             html += `<div style="margin-bottom: 1.5rem;"><h4 style="color: var(--gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(200,134,10,0.2);">⏰ ${hora}</h4><table class="data-table"><thead><tr><th>Nombre</th><th>Sucursal</th><th>Personas</th><th>Teléfono</th><th>Notas</th><th>Estatus</th></tr></thead><tbody>`;

@@ -37,7 +37,7 @@
             : 'https://7mzq2kk1-3001.usw3.devtunnels.ms';
 
         // Si ya hay token, redirigir según rol
-        const existingToken = localStorage.getItem('capitania_token');
+        const existingToken = sessionStorage.getItem('capitania_token');
         if (existingToken) {
             try {
                 const payload = JSON.parse(atob(existingToken.split('.')[1]));
@@ -47,7 +47,7 @@
                     window.location.href = 'dashboard.html';
                 }
             } catch (e) {
-                localStorage.removeItem('capitania_token');
+                sessionStorage.removeItem('capitania_token');
             }
         }
 
@@ -101,8 +101,8 @@
             }
 
             if (ok && data && data.token) {
-                localStorage.setItem('capitania_token', data.token);
-                localStorage.setItem('capitania_user', data.username);
+                sessionStorage.setItem('capitania_token', data.token);
+                sessionStorage.setItem('capitania_user', data.username);
                 // Decodificar rol del token
                 try {
                     const payload = JSON.parse(atob(data.token.split('.')[1]));
