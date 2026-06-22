@@ -28,7 +28,7 @@ const login = async (req, res) => {
         res.cookie('token', result.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 8 * 60 * 60 * 1000 // 8 horas
+            sameSite: 'lax'
         });
 
         res.json({

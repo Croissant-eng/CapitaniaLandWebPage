@@ -1,8 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
-
+ 
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            var token = sessionStorage.getItem('capitania_token');
+            if (!token) {
+                window.location.replace('index.html');
+                return;
+            }
+            try {
+                var payload = JSON.parse(atob(token.split('.')[1]));
+                if (payload.role === 'empleado') {
+                    window.location.replace('empleado.html');
+                    return;
+                }
+            } catch (e) {
+                sessionStorage.removeItem('capitania_token');
+                sessionStorage.removeItem('capitania_user');
+                window.location.replace('index.html');
+                return;
+            }
+        })();
+    </script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -11,12 +32,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/admin.css">
 </head>
-
+ 
 <body>
-
+ 
     <button class="hamburger" id="menuBtn" onclick="toggleSidebar()" aria-label="Menú">☰</button>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
+ 
     <aside class="sidebar">
         <div class="sidebar-header">
             <img src="/Images/Galeria/Opcion%201/Logo%20Capitania%20Transparente.png" alt="Capitanía"
@@ -29,7 +50,7 @@
             <li class="nav-item" onclick="switchTab('historial'); closeSidebar()">📋 Historial del Día</li>
         </ul>
     </aside>
-
+ 
     <main class="main-content">
         <div class="topbar">
             <h1 id="pageTitle">Gestión de Reservas</h1>
@@ -38,7 +59,7 @@
                 <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
             </div>
         </div>
-
+ 
         <!-- ── TAB: RESERVAS ── -->
         <section id="tab-reservas" class="tab-content active">
             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
@@ -55,7 +76,7 @@
                     <input type="date" id="filtroFecha" onchange="filtrarReservas()" style="padding: 0.6rem 1rem; background: var(--dark2); border: 1px solid rgba(200,134,10,0.3); color: var(--cream); border-radius: 4px; font-size: 0.9rem;">
                 </div>
             </div>
-
+ 
             <div style="overflow-x: auto;">
                 <table class="data-table">
                     <thead>
@@ -75,7 +96,7 @@
                 </table>
             </div>
         </section>
-
+ 
         <!-- ── TAB: EVENTOS ── -->
         <section id="tab-eventos" class="tab-content">
             <div class="dashboard-form">
@@ -108,7 +129,7 @@
             <h3 style="margin-bottom: 1rem; font-weight: 400;">Eventos Activos</h3>
             <div class="grid-cards" id="eventosGrid"></div>
         </section>
-
+ 
         <!-- ── TAB: PROMOCIONES ── -->
         <section id="tab-promociones" class="tab-content">
             <div class="dashboard-form">
@@ -141,7 +162,7 @@
             <h3 style="margin-bottom: 1rem; font-weight: 400;">Promociones Activas</h3>
             <div class="grid-cards" id="promocionesGrid"></div>
         </section>
-
+ 
         <!-- ── TAB: HISTORIAL DEL DÍA ── -->
         <section id="tab-historial" class="tab-content">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
@@ -154,9 +175,9 @@
             <div id="historialResumen" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;"></div>
             <div id="historialLista"></div>
         </section>
-
+ 
     </main>
-
+ 
     <script src="js/app.js?v=20260612"></script>
     <script>
         function toggleSidebar() {
@@ -169,5 +190,5 @@
         }
     </script>
 </body>
-
+ 
 </html>
